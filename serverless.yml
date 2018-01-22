@@ -1,0 +1,13 @@
+service: voting
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+
+functions:
+  createUser:
+    handler: handler.authorizeUser
+    events:
+      - http:
+          path: authorize/{id}
+          method: get
