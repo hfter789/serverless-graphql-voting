@@ -16,9 +16,7 @@ const generatePolicy = (principalId, effect, resource) => {
 }
 
 // Reusable Authorizer function, set on `authorizer` field in serverless.yml
-module.default = (event, context, callback) => {
-  console.log('>>>puppy');
-  console.log('event', event)
+module.exports = (event, context, callback) => {
   if (!event.authorizationToken) {
     return callback('Unauthorized')
   }
