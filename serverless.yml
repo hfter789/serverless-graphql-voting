@@ -18,7 +18,7 @@ functions:
       - http:
           path: query
           method: get
-          # authorizer: auth
+          authorizer: auth
   auth:
     handler: handler.auth
 

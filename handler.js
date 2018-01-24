@@ -1,10 +1,13 @@
 const axios = require("axios");
 const get = require('lodash/get');
+const { voteOptionType, voteType } = require('./src/graphql-types');
 const auth = require('./src/auth');
 const createErrorResponse = require('./src/helpers/create-error-response');
 
 const {
   graphql,
+  GraphQLID,
+  GraphQLList,
   GraphQLSchema,
   GraphQLObjectType,
   GraphQLString,
@@ -23,20 +26,38 @@ module.exports.authTest = (event, context, callback) => {
   });
 };
 
-function getGreeting(firstName) {
-  return `Hello ${firstName}`;
+function getVoteById(id) {
+  return [
+    {
+      _id: 1,
+      topic: 'hello',
+      voteOptions: [],
+    }
+  ];
 }
 
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'RootQueryType', // an arbitrary name
     fields: {
-      // the query has a field called 'greeting'
-      greeting: {
-        args: { firstName: { name: 'firstName', type: new GraphQLNonNull(GraphQLString) } },
-        type: GraphQLString,
-        resolve: (parent, args) => getGreeting(args.firstName),
+      vote: {
+        type: new GraphQLList(voteType),
+        args: {
+          id: {
+            type: GraphQLID,
+          },
+        },
+        resolve: (root, args) => getVoteById(args.id),
       },
+      // userVote: {
+      //   type: new GraphQLList(voteType),
+      //   resolve: (root, args, context, { rootValue: { userId } }) => {
+      //     if (userId) {
+      //       return getUserPoll(userId);
+      //     }
+      //     return [];
+      //   },
+      // },
     },
   }),
   // mutation: new GraphQLObjectType({

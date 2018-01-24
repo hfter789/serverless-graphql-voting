@@ -1,5 +1,5 @@
 {
   "queryStringParameters": {
-    "query": "{ greeting(firstName: \"Jimmy\") }"
+    "query": "{ vote { topic, id } }"
   }
 }
