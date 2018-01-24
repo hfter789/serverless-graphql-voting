@@ -1,3 +1,4 @@
+const DUMMY_AUTH = 'IAMSODUMB';
 const generatePolicy = (principalId, effect, resource) => {
   const authResponse = {}
   authResponse.principalId = principalId
@@ -22,13 +23,18 @@ module.exports = (event, context, callback) => {
   }
 
   const authToken = event.authorizationToken;
-
-  axios.get(`https://graph.facebook.com/me?access_token=${authToken}`)
-  .then(authResp => {
-    const userId = get(authResp, 'data.id');
-    return callback(null, generatePolicy(userId, 'Allow', event.methodArn))
-  })
-  .catch(error => {
+  if (authToken === DUMMY_AUTH) {
+    return callback(null, generatePolicy(DUMMY_AUTH, 'Allow', event.methodArn))
+  } else {
     return callback('Unauthorized');
-  });
+  }
+  // TODO: reenable once we have everything working
+  // axios.get(`https://graph.facebook.com/me?access_token=${authToken}`)
+  // .then(authResp => {
+  //   const userId = get(authResp, 'data.id');
+  //   return callback(null, generatePolicy(userId, 'Allow', event.methodArn))
+  // })
+  // .catch(error => {
+  //   return callback('Unauthorized');
+  // });
 }
