@@ -5,13 +5,20 @@ provider:
   runtime: nodejs6.10
 
 functions:
-  authorizeUser:
-    handler: handler.authorizeUser
+  authTest:
+    handler: handler.authTest
     events:
       - http:
-          path: authorize/{id}
+          path: authTest/{id}
           method: get
           authorizer: auth
+  query:
+    handler: handler.query
+    events:
+      - http:
+          path: query
+          method: get
+          # authorizer: auth
   auth:
     handler: handler.auth
 
